@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FORM — Gym Booking System
 
-## Getting Started
+Next.js App Router + TypeScript + custom CSS + Lucide icons. Includes a member-facing booking interface and admin dashboard.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000. Member view is `/member`; admin view is `/admin`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo features
+- Member: browse/filter/search classes, book classes, prevent duplicate bookings, view and cancel bookings.
+- Admin: overview metrics, create/delete classes, manage bookings, see derived member directory.
+- Uses browser localStorage so changes persist between page refreshes in the *same browser*.
+- Reset demo data via the footer.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Database placeholder (not connected)
+- `src/lib/mock-db.ts`: initial records, localStorage read/write. Replace with database queries.
+- `src/components/GymProvider.tsx`: state and booking operations. Replace with calls to server actions or API routes, then refresh data from backend.
+- `src/lib/types.ts`: strongly typed data models.
 
-## Learn More
+Suggested real database collections/tables: `users(id, name, email, role)`, `classes(id, name, category, coach, date, time, duration, capacity, room, intensity)`, `bookings(id, user_id, class_id, status, created_at)`.
 
-To learn more about Next.js, take a look at the following resources:
+## IMPORTANT before production
+This is a **UI prototype**, NOT a secure reservation system. The `/admin` route is publicly accessible; the member identity is hardcoded; localStorage is not shared across users or devices. Implement real authentication, authorization (server-side admin guard), database constraints, validated API/server actions and atomic transactions to avoid overselling capacity. Do not trust `role` or `userId` from the browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+`npm run build` then deploy to Vercel. Demo localStorage state is only per browser, even when deployed.
